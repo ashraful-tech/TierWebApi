@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="landSellingsModelStoreContainer" CdmEntityContainer="landSellingsEntities1">
+    <EntitySetMapping Name="Buyers">
+      <EntityTypeMapping TypeName="landSellingsModel.Buyer">
+        <MappingFragment StoreEntitySet="Buyers">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sales">
+      <EntityTypeMapping TypeName="landSellingsModel.Sale">
+        <MappingFragment StoreEntitySet="Sales">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="req_type" ColumnName="req_type" />
+          <ScalarProperty Name="type_id" ColumnName="type_id" />
+          <ScalarProperty Name="buyer_id" ColumnName="buyer id" />
+          <ScalarProperty Name="seler_id" ColumnName="seler id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sellers">
+      <EntityTypeMapping TypeName="landSellingsModel.Seller">
+        <MappingFragment StoreEntitySet="Sellers">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Types">
+      <EntityTypeMapping TypeName="landSellingsModel.Type">
+        <MappingFragment StoreEntitySet="Types">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="type1" ColumnName="type" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="qty" ColumnName="qty" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
