@@ -33,6 +33,7 @@ namespace WebApi.Controllers
         public void Add(UserModel s)
         {
             UserService.Add(s);
+            
         }
         [Route("api/User/Delete/{id}")]
         [HttpDelete]
@@ -41,7 +42,7 @@ namespace WebApi.Controllers
             UserService.Delete(id);
         }
 
-        [Route("api/Admin/Edit")]
+        [Route("api/User/Edit")]
         [HttpPut]
         public void Edit(UserModel e)
         {

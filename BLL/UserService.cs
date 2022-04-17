@@ -46,11 +46,7 @@ namespace BLL
 
         public static void Edit(UserModel e)
         {
-            var config = new MapperConfiguration(cfg => {
-
-                cfg.CreateMap<UserModel, User>();
-            }
-                );
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<UserModel, User>());
             var mapper = new Mapper(config);
             var data = mapper.Map<User>(e);
             DataAccessFactory.UserDataAccess().Edit(data);

@@ -13,10 +13,10 @@ namespace DAL
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class landSellingsEntities3 : DbContext
+    public partial class landSellingsEntities4 : DbContext
     {
-        public landSellingsEntities3()
-            : base("name=landSellingsEntities3")
+        public landSellingsEntities4()
+            : base("name=landSellingsEntities4")
         {
         }
     

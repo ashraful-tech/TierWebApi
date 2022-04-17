@@ -66,20 +66,20 @@
         </EntityType>
         <EntityType Name="Users">
           <Key>
-            <PropertyRef Name="userId" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="uname" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="role" Type="varchar" MaxLength="50" />
+          <Property Name="role" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="FK_Admins_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Admins" Type="Self.Admins" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="userId" />
+              <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Admins">
               <PropertyRef Name="userId" />
@@ -91,7 +91,7 @@
           <End Role="Buyers" Type="Self.Buyers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="userId" />
+              <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Buyers">
               <PropertyRef Name="uid" />
@@ -139,7 +139,7 @@
           <End Role="Sellers" Type="Self.Sellers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="userId" />
+              <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Sellers">
               <PropertyRef Name="uid" />
@@ -254,13 +254,13 @@
         </EntityType>
         <EntityType Name="User">
           <Key>
-            <PropertyRef Name="userId" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="uname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Admins" Relationship="Self.FK_Admins_Users" FromRole="Users" ToRole="Admins" />
           <NavigationProperty Name="Buyers" Relationship="Self.FK_Buyers_Users" FromRole="Users" ToRole="Buyers" />
           <NavigationProperty Name="Sellers" Relationship="Self.FK_Sellers_Users" FromRole="Users" ToRole="Sellers" />
@@ -270,7 +270,7 @@
           <End Role="Admins" Type="Self.Admin" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="userId" />
+              <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Admins">
               <PropertyRef Name="userId" />
@@ -282,7 +282,7 @@
           <End Role="Buyers" Type="Self.Buyer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="userId" />
+              <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Buyers">
               <PropertyRef Name="uid" />
@@ -330,14 +330,14 @@
           <End Role="Sellers" Type="Self.Seller" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="userId" />
+              <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Sellers">
               <PropertyRef Name="uid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="landSellingsEntities3" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="landSellingsEntities4" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Admins" EntityType="Self.Admin" />
           <EntitySet Name="Buyers" EntityType="Self.Buyer" />
           <EntitySet Name="Sales" EntityType="Self.Sale" />
@@ -375,7 +375,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="landSellingsModelStoreContainer" CdmEntityContainer="landSellingsEntities3">
+        <EntityContainerMapping StorageEntityContainer="landSellingsModelStoreContainer" CdmEntityContainer="landSellingsEntities4">
           <EntitySetMapping Name="Admins">
             <EntityTypeMapping TypeName="landSellingsModel.Admin">
               <MappingFragment StoreEntitySet="Admins">
@@ -444,7 +444,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="landSellingsModel.User">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="uname" ColumnName="uname" />
                 <ScalarProperty Name="password" ColumnName="password" />

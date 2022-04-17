@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="landSellingsModelStoreContainer" CdmEntityContainer="landSellingsEntities3">
+  <EntityContainerMapping StorageEntityContainer="landSellingsModelStoreContainer" CdmEntityContainer="landSellingsEntities4">
     <EntitySetMapping Name="Admins">
       <EntityTypeMapping TypeName="landSellingsModel.Admin">
         <MappingFragment StoreEntitySet="Admins">
@@ -69,7 +69,7 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="landSellingsModel.User">
         <MappingFragment StoreEntitySet="Users">
-          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="uname" ColumnName="uname" />
           <ScalarProperty Name="password" ColumnName="password" />

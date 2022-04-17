@@ -8,9 +8,9 @@ namespace DAL
 {
     public class AdminRepo : IRepository<Admin, int>
     {
-        landSellingsEntities3 db;
+        landSellingsEntities4 db;
 
-        public AdminRepo(landSellingsEntities3 db)
+        public AdminRepo(landSellingsEntities4 db)
         {
             this.db = db;
         }

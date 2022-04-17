@@ -8,7 +8,7 @@ namespace BEL
 {
     public class UserModel
     {
-        public int userId { get; set; }
+        public int id { get; set; }
         public string name { get; set; }
         public string uname { get; set; }
         public string password { get; set; }

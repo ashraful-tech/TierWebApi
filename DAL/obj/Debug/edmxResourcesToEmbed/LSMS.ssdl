@@ -61,20 +61,20 @@
   </EntityType>
   <EntityType Name="Users">
     <Key>
-      <PropertyRef Name="userId" />
+      <PropertyRef Name="id" />
     </Key>
-    <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="uname" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="role" Type="varchar" MaxLength="50" />
+    <Property Name="role" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <Association Name="FK_Admins_Users">
     <End Role="Users" Type="Self.Users" Multiplicity="1" />
     <End Role="Admins" Type="Self.Admins" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Users">
-        <PropertyRef Name="userId" />
+        <PropertyRef Name="id" />
       </Principal>
       <Dependent Role="Admins">
         <PropertyRef Name="userId" />
@@ -86,7 +86,7 @@
     <End Role="Buyers" Type="Self.Buyers" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Users">
-        <PropertyRef Name="userId" />
+        <PropertyRef Name="id" />
       </Principal>
       <Dependent Role="Buyers">
         <PropertyRef Name="uid" />
@@ -134,7 +134,7 @@
     <End Role="Sellers" Type="Self.Sellers" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Users">
-        <PropertyRef Name="userId" />
+        <PropertyRef Name="id" />
       </Principal>
       <Dependent Role="Sellers">
         <PropertyRef Name="uid" />

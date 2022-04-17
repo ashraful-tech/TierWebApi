@@ -8,11 +8,11 @@ namespace DAL
 {
     public class DataAccessFactory
     {
-        static landSellingsEntities3 db;
+        static landSellingsEntities4 db;
 
         static DataAccessFactory() 
         {
-            db = new landSellingsEntities3(); 
+            db = new landSellingsEntities4(); 
         }
 
         public static IRepository<Buyer, int> BuyerDataAccess()

@@ -13,7 +13,12 @@ namespace BLL
     {
         public static List<AdminModel> Get()
         {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<Admin, AdminModel>());
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Admin, AdminModel>();
+                cfg.CreateMap<User, UserModel>();
+            }
+            );
             var mapper = new Mapper(config);
             var data = mapper.Map<List<AdminModel>>(DataAccessFactory.AdminDataAccess().Get());
             return data;
@@ -24,8 +29,6 @@ namespace BLL
             var data = DataAccessFactory.AdminDataAccess().Get().Select(e => e.uname).ToList();
             return data;
         }
-
-
 
         public static void Add(AdminModel s)
         {
