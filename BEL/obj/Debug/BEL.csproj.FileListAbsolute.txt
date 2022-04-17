@@ -1,0 +1,6 @@
+C:\Users\Rabwah-Home\OneDrive\Desktop\Asp.Net\TierWebApi\BEL\bin\Debug\BEL.dll
+C:\Users\Rabwah-Home\OneDrive\Desktop\Asp.Net\TierWebApi\BEL\bin\Debug\BEL.pdb
+C:\Users\Rabwah-Home\OneDrive\Desktop\Asp.Net\TierWebApi\BEL\obj\Debug\BEL.csproj.AssemblyReference.cache
+C:\Users\Rabwah-Home\OneDrive\Desktop\Asp.Net\TierWebApi\BEL\obj\Debug\BEL.csproj.CoreCompileInputs.cache
+C:\Users\Rabwah-Home\OneDrive\Desktop\Asp.Net\TierWebApi\BEL\obj\Debug\BEL.dll
+C:\Users\Rabwah-Home\OneDrive\Desktop\Asp.Net\TierWebApi\BEL\obj\Debug\BEL.pdb

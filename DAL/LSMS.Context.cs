@@ -13,10 +13,10 @@ namespace DAL
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class landSellingsEntities1 : DbContext
+    public partial class landSellingsEntities3 : DbContext
     {
-        public landSellingsEntities1()
-            : base("name=landSellingsEntities1")
+        public landSellingsEntities3()
+            : base("name=landSellingsEntities3")
         {
         }
     
@@ -25,9 +25,12 @@ namespace DAL
             throw new UnintentionalCodeFirstException();
         }
     
+        public DbSet<Admin> Admins { get; set; }
         public DbSet<Buyer> Buyers { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Seller> Sellers { get; set; }
+        public DbSet<sysdiagram> sysdiagrams { get; set; }
         public DbSet<Type> Types { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

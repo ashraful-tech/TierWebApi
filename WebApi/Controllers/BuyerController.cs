@@ -1,5 +1,5 @@
 ﻿using BLL;
-using BLL.BEnt;
+using BEL;
 using DAL;
 using System;
 using System.Collections.Generic;
@@ -14,19 +14,19 @@ namespace WebApi.Controllers
     { 
         [Route("api/Buyer/Names")]
         [HttpGet]
-        public List<string> GetName()
+        public HttpResponseMessage GetNames()
         {
-            return BuyerService.GetNames();
+            var lt= BuyerService.GetNames();
+            return Request.CreateResponse(HttpStatusCode.OK, lt);
         }
 
-      
-
-        [Route("api/Buyer/All")]
         [HttpGet]
-        public List<BuyerModel> GetAll()
+        [Route("api/Buyer/All")]
+        public HttpResponseMessage Get()
         {
             var list = BuyerService.Get();
-            return list;
+            return Request.CreateResponse(HttpStatusCode.OK, list);
+
         }
 
         [Route("api/Buyer/Create")]
@@ -49,6 +49,7 @@ namespace WebApi.Controllers
             BuyerService.Edit(e);
         }
 
+        
     }
          
     

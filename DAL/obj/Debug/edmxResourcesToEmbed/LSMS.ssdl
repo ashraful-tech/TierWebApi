@@ -1,10 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="landSellingsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Admins">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="uname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="userId" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="Buyers">
     <Key>
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="uid" Type="int" />
     <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="address" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="phone" Type="varchar" MaxLength="50" Nullable="false" />
@@ -24,9 +34,20 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="uid" Type="int" />
     <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="address" Type="varchar" MaxLength="50" />
-    <Property Name="phone" Type="varchar" MaxLength="50" />
+    <Property Name="address" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="phone" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="Types">
     <Key>
@@ -38,6 +59,40 @@
     <Property Name="price" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="qty" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="uname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="role" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_Admins_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Admins" Type="Self.Admins" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Admins">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Buyers_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Buyers" Type="Self.Buyers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Buyers">
+        <PropertyRef Name="uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Sales_Buyers">
     <End Role="Buyers" Type="Self.Buyers" Multiplicity="1" />
     <End Role="Sales" Type="Self.Sales" Multiplicity="*" />
@@ -74,11 +129,34 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Sellers_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Sellers" Type="Self.Sellers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Sellers">
+        <PropertyRef Name="uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="landSellingsModelStoreContainer">
+    <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Buyers" EntityType="Self.Buyers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Sales" EntityType="Self.Sales" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Sellers" EntityType="Self.Sellers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Types" EntityType="Self.Types" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Admins_Users" Association="Self.FK_Admins_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Admins" EntitySet="Admins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Buyers_Users" Association="Self.FK_Buyers_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Buyers" EntitySet="Buyers" />
+    </AssociationSet>
     <AssociationSet Name="FK_Sales_Buyers" Association="Self.FK_Sales_Buyers">
       <End Role="Buyers" EntitySet="Buyers" />
       <End Role="Sales" EntitySet="Sales" />
@@ -90,6 +168,10 @@
     <AssociationSet Name="FK_Sales_Types" Association="Self.FK_Sales_Types">
       <End Role="Types" EntitySet="Types" />
       <End Role="Sales" EntitySet="Sales" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sellers_Users" Association="Self.FK_Sellers_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Sellers" EntitySet="Sellers" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

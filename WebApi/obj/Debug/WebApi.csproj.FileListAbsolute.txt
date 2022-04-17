@@ -74,3 +74,5 @@ C:\Users\Rabwah-Home\OneDrive\Desktop\Asp.Net\TierWebApi\WebApi\obj\Debug\WebApi
 C:\Users\Rabwah-Home\OneDrive\Desktop\Asp.Net\TierWebApi\WebApi\obj\Debug\WebApi.csproj.CopyComplete
 C:\Users\Rabwah-Home\OneDrive\Desktop\Asp.Net\TierWebApi\WebApi\obj\Debug\WebApi.dll
 C:\Users\Rabwah-Home\OneDrive\Desktop\Asp.Net\TierWebApi\WebApi\obj\Debug\WebApi.pdb
+C:\Users\Rabwah-Home\OneDrive\Desktop\Asp.Net\TierWebApi\WebApi\bin\BEL.dll
+C:\Users\Rabwah-Home\OneDrive\Desktop\Asp.Net\TierWebApi\WebApi\bin\BEL.pdb

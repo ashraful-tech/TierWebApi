@@ -1,13 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="landSellingsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="uname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="userId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Admins_Users" FromRole="Admins" ToRole="Users" />
+  </EntityType>
   <EntityType Name="Buyer">
     <Key>
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="uid" Type="Int32" />
     <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Buyers_Users" FromRole="Buyers" ToRole="Users" />
     <NavigationProperty Name="Sales" Relationship="Self.FK_Sales_Buyers" FromRole="Buyers" ToRole="Sales" />
   </EntityType>
   <EntityType Name="Sale">
@@ -28,10 +40,22 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="uid" Type="Int32" />
     <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="Sales" Relationship="Self.FK_Sales_Sellers" FromRole="Sellers" ToRole="Sales" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Sellers_Users" FromRole="Sellers" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="Type">
     <Key>
@@ -44,6 +68,43 @@
     <Property Name="qty" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="Sales" Relationship="Self.FK_Sales_Types" FromRole="Types" ToRole="Sales" />
   </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="uname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Admins" Relationship="Self.FK_Admins_Users" FromRole="Users" ToRole="Admins" />
+    <NavigationProperty Name="Buyers" Relationship="Self.FK_Buyers_Users" FromRole="Users" ToRole="Buyers" />
+    <NavigationProperty Name="Sellers" Relationship="Self.FK_Sellers_Users" FromRole="Users" ToRole="Sellers" />
+  </EntityType>
+  <Association Name="FK_Admins_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="Admins" Type="Self.Admin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Admins">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Buyers_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Buyers" Type="Self.Buyer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Buyers">
+        <PropertyRef Name="uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Sales_Buyers">
     <End Role="Buyers" Type="Self.Buyer" Multiplicity="1" />
     <End Role="Sales" Type="Self.Sale" Multiplicity="*" />
@@ -80,11 +141,34 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="landSellingsEntities1" annotation:LazyLoadingEnabled="true">
+  <Association Name="FK_Sellers_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Sellers" Type="Self.Seller" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Sellers">
+        <PropertyRef Name="uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="landSellingsEntities3" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admins" EntityType="Self.Admin" />
     <EntitySet Name="Buyers" EntityType="Self.Buyer" />
     <EntitySet Name="Sales" EntityType="Self.Sale" />
     <EntitySet Name="Sellers" EntityType="Self.Seller" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="Types" EntityType="Self.Type" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_Admins_Users" Association="Self.FK_Admins_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Admins" EntitySet="Admins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Buyers_Users" Association="Self.FK_Buyers_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Buyers" EntitySet="Buyers" />
+    </AssociationSet>
     <AssociationSet Name="FK_Sales_Buyers" Association="Self.FK_Sales_Buyers">
       <End Role="Buyers" EntitySet="Buyers" />
       <End Role="Sales" EntitySet="Sales" />
@@ -96,6 +180,10 @@
     <AssociationSet Name="FK_Sales_Types" Association="Self.FK_Sales_Types">
       <End Role="Types" EntitySet="Types" />
       <End Role="Sales" EntitySet="Sales" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sellers_Users" Association="Self.FK_Sellers_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Sellers" EntitySet="Sellers" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

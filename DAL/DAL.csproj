@@ -48,6 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin.cs">
+      <DependentUpon>LSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdminRepo.cs" />
     <Compile Include="Buyer.cs">
       <DependentUpon>LSMS.tt</DependentUpon>
     </Compile>
@@ -67,16 +71,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LSMS.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sale.cs">
       <DependentUpon>LSMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Seller.cs">
       <DependentUpon>LSMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="SellerRepo.cs" />
+    <Compile Include="DataAccessFactory.cs" />
+    <Compile Include="IRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>LSMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Type.cs">
       <DependentUpon>LSMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>LSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserRepo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

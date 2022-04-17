@@ -20,10 +20,12 @@ namespace DAL
         }
     
         public int id { get; set; }
+        public Nullable<int> uid { get; set; }
         public string name { get; set; }
         public string address { get; set; }
         public string phone { get; set; }
     
         public virtual ICollection<Sale> Sales { get; set; }
+        public virtual User User { get; set; }
     }
 }

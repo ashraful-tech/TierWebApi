@@ -6,43 +6,42 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    public class BuyerRepo
+    public class BuyerRepo : IRepository<Buyer, int>
     {
-        static landSellingsEntities1 db;
+        landSellingsEntities3 db;
 
-        static BuyerRepo()
+        public BuyerRepo(landSellingsEntities3 db)
         {
-            db = new landSellingsEntities1();
+            this.db = db;
         }
-        public static List<Buyer> Get()
+        public void Add(Buyer e)
+        {
+            db.Buyers.Add(e);
+            db.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var e = db.Buyers.FirstOrDefault(en => en.id == id);
+            db.Buyers.Remove(e);
+            db.SaveChanges();
+        }
+
+        public void Edit(Buyer e)
+        {
+            var d = db.Buyers.FirstOrDefault(en => en.id == e.id);
+            db.Entry(d).CurrentValues.SetValues(e);
+            db.SaveChanges();
+        }
+
+        public List<Buyer> Get()
         {
             return db.Buyers.ToList();
         }
 
-        public static Buyer Get(int id)
+        public Buyer Get(int id)
         {
             return db.Buyers.FirstOrDefault(e => e.id == id);
         }
-
-        public static void Edit(Buyer b)
-        {
-            var ds = db.Buyers.FirstOrDefault(e => e.id == b.id);
-            db.Entry(ds).CurrentValues.SetValues(b);
-            db.SaveChanges();
-        }
-        public static void Delete(int id)
-        {
-            var ds = db.Buyers.FirstOrDefault(e => e.id == id);
-            db.Buyers.Remove(ds);
-            db.SaveChanges();
-        }
-
-        public static void Add(Buyer s)
-        {
-            db.Buyers.Add(s);
-            db.SaveChanges();
-        }
-
-
     }
 }

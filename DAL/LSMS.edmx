@@ -5,11 +5,21 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="landSellingsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admins">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="userId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Buyers">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uid" Type="int" />
           <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="address" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="phone" Type="varchar" MaxLength="50" Nullable="false" />
@@ -29,9 +39,20 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uid" Type="int" />
           <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="address" Type="varchar" MaxLength="50" />
-          <Property Name="phone" Type="varchar" MaxLength="50" />
+          <Property Name="address" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Types">
           <Key>
@@ -43,6 +64,40 @@
           <Property Name="price" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="qty" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="uname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="role" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Admins_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Admins" Type="Self.Admins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Admins">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Buyers_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Buyers" Type="Self.Buyers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Buyers">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Sales_Buyers">
           <End Role="Buyers" Type="Self.Buyers" Multiplicity="1" />
           <End Role="Sales" Type="Self.Sales" Multiplicity="*" />
@@ -79,11 +134,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Sellers_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Sellers" Type="Self.Sellers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Sellers">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="landSellingsModelStoreContainer">
+          <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Buyers" EntityType="Self.Buyers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sales" EntityType="Self.Sales" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sellers" EntityType="Self.Sellers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Types" EntityType="Self.Types" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Admins_Users" Association="Self.FK_Admins_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Admins" EntitySet="Admins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Buyers_Users" Association="Self.FK_Buyers_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Buyers" EntitySet="Buyers" />
+          </AssociationSet>
           <AssociationSet Name="FK_Sales_Buyers" Association="Self.FK_Sales_Buyers">
             <End Role="Buyers" EntitySet="Buyers" />
             <End Role="Sales" EntitySet="Sales" />
@@ -96,20 +174,36 @@
             <End Role="Types" EntitySet="Types" />
             <End Role="Sales" EntitySet="Sales" />
           </AssociationSet>
+          <AssociationSet Name="FK_Sellers_Users" Association="Self.FK_Sellers_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Sellers" EntitySet="Sellers" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="landSellingsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Admins_Users" FromRole="Admins" ToRole="Users" />
+        </EntityType>
         <EntityType Name="Buyer">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uid" Type="Int32" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Buyers_Users" FromRole="Buyers" ToRole="Users" />
           <NavigationProperty Name="Sales" Relationship="Self.FK_Sales_Buyers" FromRole="Buyers" ToRole="Sales" />
         </EntityType>
         <EntityType Name="Sale">
@@ -130,10 +224,22 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uid" Type="Int32" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Sales" Relationship="Self.FK_Sales_Sellers" FromRole="Sellers" ToRole="Sales" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Sellers_Users" FromRole="Sellers" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="Type">
           <Key>
@@ -146,6 +252,43 @@
           <Property Name="qty" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Sales" Relationship="Self.FK_Sales_Types" FromRole="Types" ToRole="Sales" />
         </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="uname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Admins" Relationship="Self.FK_Admins_Users" FromRole="Users" ToRole="Admins" />
+          <NavigationProperty Name="Buyers" Relationship="Self.FK_Buyers_Users" FromRole="Users" ToRole="Buyers" />
+          <NavigationProperty Name="Sellers" Relationship="Self.FK_Sellers_Users" FromRole="Users" ToRole="Sellers" />
+        </EntityType>
+        <Association Name="FK_Admins_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Admins" Type="Self.Admin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Admins">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Buyers_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Buyers" Type="Self.Buyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Buyers">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Sales_Buyers">
           <End Role="Buyers" Type="Self.Buyer" Multiplicity="1" />
           <End Role="Sales" Type="Self.Sale" Multiplicity="*" />
@@ -182,11 +325,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="landSellingsEntities1" annotation:LazyLoadingEnabled="true">
+        <Association Name="FK_Sellers_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Sellers" Type="Self.Seller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Sellers">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="landSellingsEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admins" EntityType="Self.Admin" />
           <EntitySet Name="Buyers" EntityType="Self.Buyer" />
           <EntitySet Name="Sales" EntityType="Self.Sale" />
           <EntitySet Name="Sellers" EntityType="Self.Seller" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="Types" EntityType="Self.Type" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Admins_Users" Association="Self.FK_Admins_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Admins" EntitySet="Admins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Buyers_Users" Association="Self.FK_Buyers_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Buyers" EntitySet="Buyers" />
+          </AssociationSet>
           <AssociationSet Name="FK_Sales_Buyers" Association="Self.FK_Sales_Buyers">
             <End Role="Buyers" EntitySet="Buyers" />
             <End Role="Sales" EntitySet="Sales" />
@@ -199,17 +365,32 @@
             <End Role="Types" EntitySet="Types" />
             <End Role="Sales" EntitySet="Sales" />
           </AssociationSet>
+          <AssociationSet Name="FK_Sellers_Users" Association="Self.FK_Sellers_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Sellers" EntitySet="Sellers" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="landSellingsModelStoreContainer" CdmEntityContainer="landSellingsEntities1">
+        <EntityContainerMapping StorageEntityContainer="landSellingsModelStoreContainer" CdmEntityContainer="landSellingsEntities3">
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="landSellingsModel.Admin">
+              <MappingFragment StoreEntitySet="Admins">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="uname" ColumnName="uname" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Buyers">
             <EntityTypeMapping TypeName="landSellingsModel.Buyer">
               <MappingFragment StoreEntitySet="Buyers">
                 <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="uid" ColumnName="uid" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="phone" ColumnName="phone" />
@@ -231,9 +412,21 @@
             <EntityTypeMapping TypeName="landSellingsModel.Seller">
               <MappingFragment StoreEntitySet="Sellers">
                 <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="uid" ColumnName="uid" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="phone" ColumnName="phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="landSellingsModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -245,6 +438,17 @@
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="price" ColumnName="price" />
                 <ScalarProperty Name="qty" ColumnName="qty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="landSellingsModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="uname" ColumnName="uname" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="role" ColumnName="role" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -4,14 +4,20 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="fedfdb5aec9e46b5bb4a06b3c83ebe75" Name="Diagram1">
-        <EntityTypeShape EntityType="landSellingsModel.Buyer" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="landSellingsModel.Sale" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="landSellingsModel.Seller" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="landSellingsModel.Type" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+      <Diagram DiagramId="a05947680f3c45deac0425bdc404c0ab" Name="Diagram1">
+        <EntityTypeShape EntityType="landSellingsModel.Admin" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="landSellingsModel.Buyer" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="landSellingsModel.Sale" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="landSellingsModel.Seller" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="landSellingsModel.sysdiagram" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="landSellingsModel.Type" Width="1.5" PointX="3" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="landSellingsModel.User" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <AssociationConnector Association="landSellingsModel.FK_Admins_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="landSellingsModel.FK_Buyers_Users" ManuallyRouted="false" />
         <AssociationConnector Association="landSellingsModel.FK_Sales_Buyers" ManuallyRouted="false" />
         <AssociationConnector Association="landSellingsModel.FK_Sales_Sellers" ManuallyRouted="false" />
         <AssociationConnector Association="landSellingsModel.FK_Sales_Types" ManuallyRouted="false" />
+        <AssociationConnector Association="landSellingsModel.FK_Sellers_Users" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
